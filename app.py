@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-
 from flask import Flask, jsonify
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
@@ -16,7 +15,6 @@ client = gspread.authorize(creds)
 sheet = client.open("Copy of sms loyalty point").sheet1
 sheet2 = client.open("total points").sheet1
 
-# Function to get sheet1 data
 # Function to get sheet data
 def get_data():
     try:
@@ -99,11 +97,6 @@ def get_loyalty_points():
 scheduler = BackgroundScheduler()
 scheduler.add_job(func=get_loyalty_points, trigger="interval", minutes=20)
 scheduler.start()
-
-
-@app.route('/')
-def home():
-    return get_loyalty_points()
      
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
