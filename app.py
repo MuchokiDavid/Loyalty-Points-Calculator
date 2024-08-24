@@ -43,13 +43,13 @@ def get_sheet_data():
     return data
 
 ## Function to find a cell with specific query
-def find_cell(query, points):
+def find_cell(name,query, points):
     try:
         data_num = len(sheet2.get_all_records())
         cell = sheet2.find(str(query))  # find cell with ths data
 
         if data_num == 0 or cell is None:
-            insertRow = [query, points]
+            insertRow = [name,query, points]
             sheet2.insert_row(insertRow, data_num + 2)
             print(f"Added new entry for '{query}' with {points} points.")
             # send message
@@ -57,7 +57,7 @@ def find_cell(query, points):
         else:
             total_points = get_sheet_data()[cell.row - 2]["TOTAL POINTS"]
             total_points += points
-            sheet2.update_cell(cell.row, 2, total_points)  # Update TOTAL POINTS column
+            sheet2.update_cell(cell.row, 3, total_points)  # Update TOTAL POINTS column
             print(f"Found '{query}' at row {cell.row}, column {cell.col}")
             # send message
             send_message(query, total_points - points, total_points)
@@ -87,7 +87,7 @@ def calculate_loyalty_points():
         
         amount_paid = row["AMOUNT PAID"]
         new_points = amount_paid / 100
-        find_cell(row["CONTACT"], new_points)
+        find_cell(row["NAME"], row["CONTACT"], new_points)
 
         updates.append((i + 2, 5, new_points))  # Update LOYALTY POINTS column
         updates.append((i + 2, 6, datetime.now().isoformat()))  # Update "Processed" column with timestamp
