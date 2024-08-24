@@ -3,8 +3,7 @@ from flask import Flask, jsonify
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from apscheduler.schedulers.background import BackgroundScheduler
-from datetime import datetime, timedelta
-
+from datetime import datetime
 app = Flask(__name__)
 
 scope = ["https://spreadsheets.google.com/feeds",'https://www.googleapis.com/auth/spreadsheets',"https://www.googleapis.com/auth/drive.file","https://www.googleapis.com/auth/drive"]
