@@ -72,7 +72,6 @@ This project is a Python Flask application that calculates and updates loyalty p
 - `app.py`: The main application file containing the Flask server, functions for fetching and updating data, and loyalty points calculations.
 - `creds.json`: Google API credentials file (not included in the repo, must be provided).
 - `requirements.txt`: A list of Python packages required to run the application.
-- `last_processed.txt`: A file to keep track of the last processed row (if using the index tracking method).
 
 ## Code Overview
 
