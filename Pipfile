@@ -20,6 +20,7 @@ werkzeug = "2.2.2"
 gspread = "*"
 oauth2client = "*"
 apscheduler = "*"
+requests = "*"
 
 [dev-packages]
 

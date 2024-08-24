@@ -4,7 +4,20 @@ import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from apscheduler.schedulers.background import BackgroundScheduler
 from datetime import datetime
+import requests
+from dotenv import load_dotenv
+load_dotenv()
+import os
+
 app = Flask(__name__)
+application= app
+
+app.config['SMS_API_KEY'] = os.getenv('SMS_API_KEY') #SMS Api key
+app.config['SMS_SENDER_ID'] = os.getenv('SMS_SENDER_ID') #SMS Sender ID
+app.config['API_URL'] = os.getenv('API_URL') #SMS SERVER URL
+app.config['SMS_USERNAME'] = os.getenv('SMS_USERNAME') #SMS Username
+app.config['SMS_PASSWORD'] = os.getenv('SMS_PASSWORD') #SMS Password
+
 
 scope = ["https://spreadsheets.google.com/feeds",'https://www.googleapis.com/auth/spreadsheets',"https://www.googleapis.com/auth/drive.file","https://www.googleapis.com/auth/drive"]
 
@@ -33,17 +46,21 @@ def get_sheet_data():
 def find_cell(query, points):
     try:
         data_num = len(sheet2.get_all_records())
-        cell = sheet2.find(str(query))  # Convert query to string
+        cell = sheet2.find(str(query))  # find cell with ths data
 
         if data_num == 0 or cell is None:
             insertRow = [query, points]
             sheet2.insert_row(insertRow, data_num + 2)
             print(f"Added new entry for '{query}' with {points} points.")
+            # send message
+            send_message(query, 0, points)
         else:
             total_points = get_sheet_data()[cell.row - 2]["TOTAL POINTS"]
             total_points += points
             sheet2.update_cell(cell.row, 2, total_points)  # Update TOTAL POINTS column
             print(f"Found '{query}' at row {cell.row}, column {cell.col}")
+            # send message
+            send_message(query, total_points - points, total_points)
             return cell
 
     except StopIteration:
@@ -83,8 +100,32 @@ def calculate_loyalty_points():
         print(f"Error updating loyalty points: {e}")
 
 # Function to send message (placeholder)
+# Function to send message
 def send_message(phone, old_points, new_points):
-    print(f"Sending message to {phone}: Your loyalty points have been updated from {old_points} to {new_points}.")
+    message = f"You have been successifully been rewarded {new_points - old_points} loyalty points. Your current loyalty point balance is {new_points}."
+    payload = {
+        'sender_id': app.config['SMS_SENDER_ID'],
+        'mobile': phone,
+        'msg': message,
+        'userid': app.config['SMS_USERNAME'],
+        'password': app.config['SMS_PASSWORD'],
+        'sendMethod': 'quick',
+        'msgType': 'text',
+        'output': 'json',
+        'duplicatecheck': True
+    }
+    
+    headers = {
+        'Authorization': f'Bearer {app.config["SMS_API_KEY"]}', 
+        'Content-Type': 'multipart/form-data', 
+    }
+
+    response = requests.post(app.config['API_URL'], data=payload, headers=headers)
+
+    if response.status_code == 200:
+        print('SMS sent successfully!')
+    else:
+        print('Failed to send SMS:', response.text)
 
 
 def get_loyalty_points():
@@ -93,9 +134,13 @@ def get_loyalty_points():
     return jsonify({"message": "Loyalty points calculated successfully"}), 200
 
 # schedule 20 min
-scheduler = BackgroundScheduler()
-scheduler.add_job(func=get_loyalty_points, trigger="interval", minutes=20)
-scheduler.start()
+# scheduler = BackgroundScheduler()
+# scheduler.add_job(func=get_loyalty_points, trigger="interval", minutes=20)
+# scheduler.start()
+
+@app.route('/', methods=['GET'])
+def hello():
+    return get_loyalty_points()
      
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
