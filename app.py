@@ -99,7 +99,6 @@ def calculate_loyalty_points():
     except Exception as e:
         print(f"Error updating loyalty points: {e}")
 
-# Function to send message (placeholder)
 # Function to send message
 def send_message(phone, old_points, new_points):
     message = f"You have been successifully been rewarded {new_points - old_points} loyalty points. Your current loyalty point balance is {new_points}."
