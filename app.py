@@ -101,7 +101,7 @@ def calculate_loyalty_points():
 
 # Function to send message
 def send_message(phone, old_points, new_points):
-    message = f"You have been successifully been rewarded {new_points - old_points} loyalty points. Your current loyalty point balance is {new_points}."
+    message = f"You have been successifully been rewarded {new_points - old_points} loyalty points. Your new loyalty point balance is {new_points}."
     payload = {
         'sender_id': app.config['SMS_SENDER_ID'],
         'mobile': phone,
