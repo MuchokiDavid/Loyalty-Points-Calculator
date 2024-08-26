@@ -27,7 +27,7 @@ client = gspread.authorize(creds)
 sheet = client.open("Copy of sms loyalty point").sheet1
 sheet2 = client.open("total points").sheet1
 
-# Function to get sheet data
+# Function to get sheet1 data
 def get_data():
     try:
         data = sheet.get_all_records()
@@ -66,7 +66,7 @@ def find_cell(name,query, points):
     except StopIteration:
         # If the cell is not found, we handle it here
         print(f"'{query}' not found, adding new entry.")
-        insertRow = [query, points]
+        insertRow = [name, query, points]
         sheet2.insert_row(insertRow, data_num + 2)
     except Exception as e:
         print(f"Error finding '{query}': {e}")
