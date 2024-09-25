@@ -8,6 +8,7 @@ import requests
 from dotenv import load_dotenv
 load_dotenv()
 import os
+import requests
 
 app = Flask(__name__)
 application= app
@@ -24,8 +25,8 @@ scope = ["https://spreadsheets.google.com/feeds",'https://www.googleapis.com/aut
 creds = ServiceAccountCredentials.from_json_keyfile_name("creds.json",scope)
 client = gspread.authorize(creds)
 
-sheet = client.open("Copy of sms loyalty point").sheet1
-sheet2 = client.open("total points").sheet1
+sheet = client.open("test transactions").sheet1
+sheet2 = client.open("test total").sheet1
 
 # Function to get sheet1 data
 def get_data():
@@ -54,14 +55,14 @@ def find_cell(name,query, points):
             print(f"Added new entry for '{query}' with {points} points.")
             # send message
             send_message(query, 0, points)
-        else:
-            total_points = get_sheet_data()[cell.row - 2]["TOTAL POINTS"]
-            total_points += points
-            sheet2.update_cell(cell.row, 3, total_points)  # Update TOTAL POINTS column
-            print(f"Found '{query}' at row {cell.row}, column {cell.col}")
-            # send message
-            send_message(query, total_points - points, total_points)
-            return cell
+        # else:
+        total_points = get_sheet_data()[cell.row - 2]["TOTAL POINTS"]
+        total_points += points
+        sheet2.update_cell(cell.row, 3, total_points)  # Update TOTAL POINTS column
+        print(f"Found '{query}' at row {cell.row}, column {cell.col}")
+        # send message
+        send_message(query, total_points - points, total_points)
+        return cell
 
     except StopIteration:
         # If the cell is not found, we handle it here
@@ -101,25 +102,24 @@ def calculate_loyalty_points():
 
 # Function to send message
 def send_message(phone, old_points, new_points):
-    message = f"You have been successifully been rewarded {new_points - old_points} loyalty points. Your new loyalty point balance is {new_points}."
+    phn = str(phone)
+    fon = phn.replace("254", "")
+    message = f"You have been successfully rewarded {new_points - old_points} loyalty points. Your new balance is {new_points}."
+    
     payload = {
         'sender_id': app.config['SMS_SENDER_ID'],
-        'mobile': phone,
-        'msg': message,
-        'userid': app.config['SMS_USERNAME'],
-        'password': app.config['SMS_PASSWORD'],
-        'sendMethod': 'quick',
-        'msgType': 'text',
-        'output': 'json',
-        'duplicatecheck': True
+        'recipient': fon,
+        'type': 'plain',
+        'message': message
     }
     
     headers = {
         'Authorization': f'Bearer {app.config["SMS_API_KEY"]}', 
-        'Content-Type': 'multipart/form-data', 
+        'Content-Type': 'application/json', 
+        'Accept': 'application/json'
     }
 
-    response = requests.post(app.config['API_URL'], data=payload, headers=headers)
+    response = requests.post(app.config['API_URL'], json=payload, headers=headers)
 
     if response.status_code == 200:
         print('SMS sent successfully!')
@@ -128,19 +128,21 @@ def send_message(phone, old_points, new_points):
 
 
 def get_loyalty_points():
-    calculate_loyalty_points()
-    print("Loyalty points calculated successfully")
-    return jsonify({"message": "Loyalty points calculated successfully"}), 200
+    with app.app_context():  # Ensures that the function runs within the app context
+        calculate_loyalty_points()
+        print("Loyalty points calculated successfully")
+        return jsonify({"message": "Loyalty points calculated successfully"}), 200
 
 # schedule 20 min
-# scheduler = BackgroundScheduler()
-# scheduler.add_job(func=get_loyalty_points, trigger="interval", minutes=20)
-# scheduler.start()
+scheduler = BackgroundScheduler()
+scheduler.add_job(func=get_loyalty_points, trigger="interval", minutes=1)
+scheduler.start()
 
 @app.route('/', methods=['GET'])
 def hello():
     return get_loyalty_points()
      
 if __name__ == '__main__':
-    app.run(port=5555, debug=True)
+    # app.run(port=5555, debug=True)
+    get_loyalty_points()
     # app.run()
