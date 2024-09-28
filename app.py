@@ -49,6 +49,8 @@ def find_cell(name, query, points):
     try:
         data_num = len(sheet2.get_all_records())
         cell = sheet2.find(str(query))  # Find cell with the data
+        name = name.encode('utf-8').decode('utf-8')
+        query = str(query)
 
         if data_num == 0 or cell is None:
             insertRow = [name, query, points]
@@ -145,51 +147,51 @@ def calculate_loyalty_points():
             logging.error(f"Error updating Google Sheets for {row['CONTACT']}: {e}")
             print(f"Error updating Google Sheets for {row['CONTACT']}: {e}")
 
-
-def send_message(phone, old_points, new_points, name, retries=3, backoff=2):
+def send_message(phone, old_points, new_points, name):
     phn = str(phone)
-    plus = "+"
-    recipient = plus + phn
+    plus= "+"
+    recipient= plus+phn
 
-    message = f"""Dear {name}, You’ve just earned {new_points - old_points} Gas Points! Your new balance is {new_points}. 
-    \nOnce you reach 50 points, you will receive special gifts and free giveaways! Thank you for staying loyal to Centorz Gas Points. 
-    \nFor any inquiries, feel free to contact us at 0723800950 via call or WhatsApp. """
+    # Ensure name and message are encoded in UTF-8
+    try:
+        name = name.encode('utf-8').decode('utf-8')
+    except UnicodeEncodeError as e:
+        print(f"Error encoding name: {e}")
+        logging.error(f"Error encoding name for {phone}: {e}")
+        return False
 
+    message = f"""Dear {name}, You have just earned {new_points - old_points} Gas Points! Your new balance is {new_points}. \n
+    Once you reach 50 points, you’ll receive special gifts and free giveaways! Thank you for staying loyal to Centorz Gas Points. \n
+    For any inquiries, feel free to contact us at 0723800950 via call or WhatsApp. """
+    
     payload = {
         'sender_id': app.config['SMS_SENDER_ID'],
         'recipient': recipient,
         'type': 'plain',
-        'message': message
+        'message': message.encode('utf-8').decode('utf-8')
     }
-
+    
     headers = {
-        'Authorization': f'Bearer {app.config["SMS_API_KEY"]}',
-        'Content-Type': 'application/json',
+        'Authorization': f'Bearer {app.config["SMS_API_KEY"]}', 
+        'Content-Type': 'application/json', 
         'Accept': 'application/json'
     }
 
-    for attempt in range(retries):
-        try:
-            response = requests.post(app.config['API_URL'], json=payload, headers=headers)
-            response.raise_for_status()  # Raises HTTPError for bad responses
-            data = response.json()
-            print(data)
-
-            if data.get("status") == "success":
-                print('SMS sent successfully!')
-                return True
-            else:
-                print('Failed to send SMS:', data.get("message"))
-                # logging.error(data.get("message"))
-                return False
-        except Exception as e:
-            # logging.error(f"SMS sending failed on attempt {attempt + 1}: {e}")
-            if attempt < retries - 1:
-                time.sleep(backoff ** attempt)  # Exponential backoff
-            else:
-                print('Failed to send SMS after multiple attempts.')
-                return False
-
+    try:
+        response = requests.post(app.config['API_URL'], json=payload, headers=headers)
+        data = response.json()
+        
+        if data.get("status") == "success":
+            print('SMS sent successfully!')
+            return True
+        else:
+            print('Failed to send SMS:', data.get("message"))
+            logging.error(data.get("message"))
+            return False
+    except Exception as e:
+        print(f"Error sending SMS: {e}")
+        logging.error(f"Error sending SMS to {phone}: {e}")
+        return False
 
 def get_loyalty_points():
     with app.app_context():  # Ensures that the function runs within the app context
@@ -203,118 +205,24 @@ def hello():
     # return "<h3>Google sheet</h3>"
     return get_loyalty_points()
     
-def main():
-    scheduler = BackgroundScheduler()
+@app.route('/run_scheduler', methods=['GET'])
+def run_scheduler():
+    get_loyalty_points()  # This will call your loyalty points calculation function
+    return "Scheduler Task Executed", 200
 
-    # Schedule the job to run every hour
-    scheduler.add_job(func=calculate_loyalty_points, trigger='interval', minutes=1)
-    scheduler.start()
 
-    try:
-        while True:
-            time.sleep(1)  # Keep the main thread alive
-    except (KeyboardInterrupt, SystemExit):
-        scheduler.shutdown()  # Shut down the scheduler o
+# def main():
+#     scheduler = BackgroundScheduler()
+
+#     # Schedule the job to run every hour
+#     scheduler.add_job(func=calculate_loyalty_points, trigger='interval', minutes=1)
+#     scheduler.start()
+
+#     try:
+#         while True:
+#             time.sleep(1)  # Keep the main thread alive
+#     except (KeyboardInterrupt, SystemExit):
+#         scheduler.shutdown()  # Shut down the scheduler o
      
 if __name__ == '__main__':
-    main()
-    
-    
-    
-
-# Function to send message
-# def send_message(phone, old_points, new_points, name):
-#     phn = str(phone)
-#     plus= "+"
-#     recipient= plus+phn
-
-#     message = f"""Dear {name}, You’ve just earned {new_points - old_points} Gas Points! Your new balance is {new_points}. 
-#     Once you reach 50 points, you’ll receive special gifts and free giveaways! Thank you for staying loyal to Centorz Gas Points. 
-#     For any inquiries, feel free to contact us at 0723800950 via call or WhatsApp. """
-    
-#     payload = {
-#         'sender_id': app.config['SMS_SENDER_ID'],
-#         'recipient': recipient,
-#         'type': 'plain',
-#         'message': message
-#     }
-    
-#     headers = {
-#         'Authorization': f'Bearer {app.config["SMS_API_KEY"]}', 
-#         'Content-Type': 'application/json', 
-#         'Accept': 'application/json'
-#     }
-
-#     response = requests.post(app.config['API_URL'], json=payload, headers=headers)
-#     data=response.json()
-#     print(data)
-
-#     if data.get("status") == "success":
-#         print('SMS sent successfully!')
-#     else:
-#         print('Failed to send SMS:', data.get("message"))
-#         logging.error(data.get("message"))
-
-
-
-
-# Function to calculate loyalty points and update the sheet
-# def calculate_loyalty_points():
-#     data = get_data()
-#     if not data:
-#         return
-
-#     updates = []  # Collect cell updates
-#     for i, row in enumerate(data):
-#         # Check if this row has been processed
-#         if row.get("PROCESSED"):
-#             continue
-        
-#         amount_paid = row["AMOUNT PAID"]
-#         new_points = amount_paid / 100
-#         find_cell(row["NAME"], row["CONTACT"], new_points)
-
-#         updates.append((i + 2, 5, new_points))  # Update LOYALTY POINTS column
-#         updates.append((i + 2, 6, datetime.now().isoformat()))  # Update "Processed" column with timestamp
-
-#     try:
-#         for row, col, value in updates:
-#             sheet.update_cell(row, col, value)
-#         print("Loyalty points updated successfully")
-#     except Exception as e:
-#         logging.error(e)
-#         print(f"Error updating loyalty points: {e}")
-
-
-
-
-# ## Function to find a cell with specific query
-# def find_cell(name,query, points):
-#     try:
-#         data_num = len(sheet2.get_all_records())
-#         cell = sheet2.find(str(query))  # find cell with ths data
-
-#         if data_num == 0 or cell is None:
-#             insertRow = [name,query, points]
-#             sheet2.insert_row(insertRow, data_num + 2)
-#             print(f"Added new entry for '{query}' with {points} points.")
-#             # send message
-#             send_message(query, 0, points,name)
-#         # else:
-#         total_points = get_sheet_data()[cell.row - 2]["TOTAL POINTS"]
-#         total_points += points
-#         sheet2.update_cell(cell.row, 3, total_points)  # Update TOTAL POINTS column
-#         print(f"Found '{query}' at row {cell.row}, column {cell.col}")
-#         # send message
-#         send_message(query, total_points - points, total_points,name)
-#         return cell
-
-#     except StopIteration:
-#         # If the cell is not found, we handle it here
-#         print(f"'{query}' not found, adding new entry.")
-#         insertRow = [name, query, points]
-#         sheet2.insert_row(insertRow, data_num + 2)
-#     except Exception as e:
-#         logging.error(e)
-#         print(f"Error finding '{query}': {e}")
-#         return None
+    app.run()
