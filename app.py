@@ -33,10 +33,10 @@ sheet2 = client.open("total points").sheet1
 def get_data():
     try:
         data = sheet.get_all_records()
-        print("Data fetched successfully")
+        # print("Data fetched successfully")
         return data
     except Exception as e:
-        print(f"Error fetching data: {e}")
+        # print(f"Error fetching data: {e}")
         return []
 
 # get sheet2 data
@@ -55,10 +55,14 @@ def find_cell(name, query, points):
         if data_num == 0 or cell is None:
             insertRow = [name, query, points]
             sheet2.insert_row(insertRow, data_num + 2)
-            print(f"Added new entry for '{query}' with {points} points.")
+            # print(f"Added new entry for '{query}' with {points} points.")
             # Send message
-            send_message(query, 0, points, name)
-            
+            try:
+                send_message(query, 0, points, name)
+            except Exception as e:
+                logging.error(e)
+                # print(f"Error finding '{query}': {e}")
+                return None
             # After inserting, find the newly inserted cell
             cell = sheet2.find(str(query))
             if cell is None:
@@ -68,15 +72,20 @@ def find_cell(name, query, points):
             total_points = get_sheet_data()[cell.row - 2]["TOTAL POINTS"]
             total_points += points
             sheet2.update_cell(cell.row, 3, total_points)  # Update TOTAL POINTS column
-            print(f"Found '{query}' at row {cell.row}, column {cell.col}")
+            # print(f"Found '{query}' at row {cell.row}, column {cell.col}")
             # Send message
-            send_message(query, total_points - points, total_points, name)
+            try:
+                send_message(query, total_points - points, total_points, name)
+            except Exception as e:
+                logging.error(e)
+                # print(f"Error finding '{query}': {e}")
+                return None
         
         return cell
 
     except StopIteration:
         # If the cell is not found, handle it here
-        print(f"'{query}' not found, adding new entry.")
+        # print(f"'{query}' not found, adding new entry.")
         insertRow = [name, query, points]
         sheet2.insert_row(insertRow, data_num + 2)
         # Optionally, find the cell again after insertion
@@ -88,64 +97,103 @@ def find_cell(name, query, points):
             return None
     except Exception as e:
         logging.error(e)
-        print(f"Error finding '{query}': {e}")
+        # print(f"Error finding '{query}': {e}")
         return None
 
 
-# Function to calculate loyalty points and send messages
 def calculate_loyalty_points():
-    print("Starting loyalty points calculation...")
-    
     data = get_data()
     if not data:
-        print("No data fetched!")
         return
 
-    print(f"Fetched {len(data)} rows to process.")
-    
+    updates = []  # Collect cell updates
     for i, row in enumerate(data):
-        print(f"Processing row {i+1}: {row}")
-
-        # Skip rows already marked as "PROCESSED"
+        # Check if this row has been processed
         if row.get("PROCESSED"):
-            print(f"Row {i+1} already processed. Skipping...")
             continue
-
-        amount_paid = row["AMOUNT PAID"]
-        new_points = amount_paid / 100  # Adjust point calculation as needed
-        print(f"Amount paid: {amount_paid}, calculated points: {new_points}")
-
-        # Find or add cell in the second sheet for the contact
-        cell = find_cell(row["NAME"], row["CONTACT"], new_points)
-        if cell is None:
-            print(f"Error finding or inserting row for {row['CONTACT']}.")
-            continue
-
-        # Ensure SMS is sent successfully before marking row as processed
-        success = False
-        retries = 3
-        while not success and retries > 0:
-            print(f"Sending SMS to {row['CONTACT']}...")
-            success = send_message(row["CONTACT"], 0, new_points, row["NAME"])
-            if success:
-                print(f"SMS sent successfully to {row['CONTACT']}")
-            else:
-                print(f"Failed to send SMS to {row['CONTACT']}. Retrying...")
-                retries -= 1
-                time.sleep(2)
-
-        if not success:
-            print(f"Failed to send SMS to {row['CONTACT']} after multiple attempts.")
-            continue
-
-        # If successful, update the sheet to mark the row as processed
+        
+        amount_paid_str = row.get("AMOUNT PAID", "")
         try:
-            sheet.update_cell(i + 2, 5, new_points)  # Update LOYALTY POINTS column
-            sheet.update_cell(i + 2, 6, datetime.now().isoformat())  # Update "Processed" column with timestamp
-            print(f"Loyalty points for {row['CONTACT']} updated successfully.")
-        except Exception as e:
-            logging.error(f"Error updating Google Sheets for {row['CONTACT']}: {e}")
-            print(f"Error updating Google Sheets for {row['CONTACT']}: {e}")
+            amount_paid = float(amount_paid_str)
+        except ValueError:
+            # logging.error(f"Invalid 'AMOUNT PAID' value for contact {row['CONTACT']}: {amount_paid_str}")
+            continue  # Skip to the next row if conversion fails
+
+        # amount_paid = float(row["AMOUNT PAID"])
+        new_points = amount_paid / 100
+        cell = find_cell(row["NAME"], row["CONTACT"], new_points)
+
+        if cell is None:
+            logging.error(f"Failed to process loyalty points for contact {row['CONTACT']}")
+            continue  # Skip to the next row
+
+        updates.append((i + 2, 5, new_points))  # Update LOYALTY POINTS column
+        updates.append((i + 2, 6, datetime.now().isoformat()))  # Update "Processed" column with timestamp
+
+    try:
+        for row, col, value in updates:
+            sheet.update_cell(row, col, value)
+    except Exception as e:
+        logging.error(e)
+        print(f"Error updating loyalty points: {e}")
+
+# Function to calculate loyalty points and send messages
+# def calculate_loyalty_points():
+#     # print("Starting loyalty points calculation...")
+    
+#     data = get_data()
+#     if not data:
+#         # print("No data fetched!")
+#         return
+
+#     # print(f"Fetched {len(data)} rows to process.")
+    
+#     for i, row in enumerate(data):
+#         # print(f"Processing row {i+1}: {row}")
+
+#         # Skip rows already marked as "PROCESSED"
+#         if row.get("PROCESSED"):
+#             # print(f"Row {i+1} already processed. Skipping...")
+#             continue
+
+#         amount_paid = row["AMOUNT PAID"]
+#         new_points = amount_paid / 100  # Adjust point calculation as needed
+#         # print(f"Amount paid: {amount_paid}, calculated points: {new_points}")
+
+#         # Find or add cell in the second sheet for the contact
+#         cell = find_cell(row["NAME"], row["CONTACT"], new_points)
+#         if cell is None:
+#             # print(f"Error finding or inserting row for {row['CONTACT']}.")
+#             continue
+
+#         # Ensure SMS is sent successfully before marking row as processed
+#         success = False
+#         retries = 3
+#         while not success and retries > 0:
+#             # print(f"Sending SMS to {row['CONTACT']}...")
+#             success = send_message(row["CONTACT"], 0, new_points, row["NAME"])
+#             if success:
+#                 return    
+#                 # print(f"SMS sent successfully to {row['CONTACT']}")
+#             else:
+#                 # print(f"Failed to send SMS to {row['CONTACT']}. Retrying...")
+#                 retries -= 1
+#                 time.sleep(2)
+
+#         if not success:
+#             # print(f"Failed to send SMS to {row['CONTACT']} after multiple attempts.")
+#             continue
+
+#         # If successful, update the sheet to mark the row as processed
+#         try:
+#             sheet.update_cell(i + 2, 5, new_points)  # Update LOYALTY POINTS column
+#             sheet.update_cell(i + 2, 6, datetime.now().isoformat())  # Update "Processed" column with timestamp
+#             # print(f"Loyalty points for {row['CONTACT']} updated successfully.")
+#             return {"message": "Updated successfully"},200   
+#         except Exception as e:
+#             logging.error(f"Error updating Google Sheets for {row['CONTACT']}: {e}")
+#             # print(f"Error updating Google Sheets for {row['CONTACT']}: {e}")
+#             return {"message": "Updated unsuccessfully"},400
 
 def send_message(phone, old_points, new_points, name):
     phn = str(phone)
@@ -156,13 +204,13 @@ def send_message(phone, old_points, new_points, name):
     try:
         name = name.encode('utf-8').decode('utf-8')
     except UnicodeEncodeError as e:
-        print(f"Error encoding name: {e}")
+        # print(f"Error encoding name: {e}")
         logging.error(f"Error encoding name for {phone}: {e}")
         return False
-
-    message = f"""Dear {name}, You have just earned {new_points - old_points} Gas Points! Your new balance is {new_points}. \n
-    Once you reach 50 points, you’ll receive special gifts and free giveaways! Thank you for staying loyal to Centorz Gas Points. \n
-    For any inquiries, feel free to contact us at 0723800950 via call or WhatsApp. """
+    
+    message= f"""Hi {name} You Earned {new_points - old_points} Gas Points! New balance: {new_points}. Reach 50 points for gifts! Call/WhatsApp 0723800950."Kindly rate us https://forms.gle/xBH9oYAgjeop7mnn9"""
+    
+    # message = f"""You Earned {new_points - old_points} Gas Points! New balance: {new_points}. Reach 50 points for gifts! Call/WhatsApp 0723800950."""
     
     payload = {
         'sender_id': app.config['SMS_SENDER_ID'],
@@ -182,47 +230,35 @@ def send_message(phone, old_points, new_points, name):
         data = response.json()
         
         if data.get("status") == "success":
-            print('SMS sent successfully!')
+            # print('SMS sent successfully!')
             return True
         else:
-            print('Failed to send SMS:', data.get("message"))
+            # print('Failed to send SMS:', data.get("message"))
             logging.error(data.get("message"))
             return False
     except Exception as e:
-        print(f"Error sending SMS: {e}")
+        # print(f"Error sending SMS: {e}")
         logging.error(f"Error sending SMS to {phone}: {e}")
         return False
 
 def get_loyalty_points():
     with app.app_context():  # Ensures that the function runs within the app context
         calculate_loyalty_points()
-        print("Loyalty points calculated successfully")
+        # print("Loyalty points calculated successfully")
         return jsonify({"message": "Loyalty points calculated successfully"}), 200
 
 
-@app.route('/', methods=['GET'])
+@app.route('/run', methods=['GET'])
 def hello():
-    # return "<h3>Google sheet</h3>"
-    return get_loyalty_points()
+    # calculate_loyalty_points()
+    return "<h3>Google sheet</h3>"
     
 @app.route('/run_scheduler', methods=['GET'])
 def run_scheduler():
-    get_loyalty_points()  # This will call your loyalty points calculation function
+    calculate_loyalty_points()  # This will call your loyalty points calculation function
     return "Scheduler Task Executed", 200
 
 
-# def main():
-#     scheduler = BackgroundScheduler()
-
-#     # Schedule the job to run every hour
-#     scheduler.add_job(func=calculate_loyalty_points, trigger='interval', minutes=1)
-#     scheduler.start()
-
-#     try:
-#         while True:
-#             time.sleep(1)  # Keep the main thread alive
-#     except (KeyboardInterrupt, SystemExit):
-#         scheduler.shutdown()  # Shut down the scheduler o
      
 if __name__ == '__main__':
     app.run()
