@@ -1,3 +1,5 @@
 # Ignore credential files
 creds.json
 *.env
+env
+venv
