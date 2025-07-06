@@ -1,0 +1,146 @@
+2025-01-29 22:45:06,978 ERROR root APIError: [503]: The service is currently unavailable.
+2025-01-29 22:45:06,978 ERROR root Failed to process loyalty points for contact 254718555308
+2025-02-04 08:35:14,970 ERROR root SQLSTATE[HY000] [1698] Access denied for user 'talksasa_bulksms'@'localhost' (Connection: mysql, SQL: select * from `cg_personal_access_tokens` where `cg_personal_access_tokens`.`id` = 269 limit 1)
+2025-02-04 08:45:09,991 ERROR root SQLSTATE[HY000] [1698] Access denied for user 'talksasa_bulksms'@'localhost' (Connection: mysql, SQL: select * from `cg_personal_access_tokens` where `cg_personal_access_tokens`.`id` = 269 limit 1)
+2025-02-04 10:30:11,548 ERROR root SQLSTATE[HY000] [1698] Access denied for user 'talksasa_bulksms'@'localhost' (Connection: mysql, SQL: select * from `cg_personal_access_tokens` where `cg_personal_access_tokens`.`id` = 269 limit 1)
+2025-02-04 10:55:08,362 ERROR root SQLSTATE[HY000] [1698] Access denied for user 'talksasa_bulksms'@'localhost' (Connection: mysql, SQL: select * from `cg_personal_access_tokens` where `cg_personal_access_tokens`.`id` = 269 limit 1)
+2025-02-04 11:05:09,675 ERROR root SQLSTATE[HY000] [1698] Access denied for user 'talksasa_bulksms'@'localhost' (Connection: mysql, SQL: select * from `cg_personal_access_tokens` where `cg_personal_access_tokens`.`id` = 269 limit 1)
+2025-02-04 11:15:09,720 ERROR root SQLSTATE[HY000] [1698] Access denied for user 'talksasa_bulksms'@'localhost' (Connection: mysql, SQL: select * from `cg_personal_access_tokens` where `cg_personal_access_tokens`.`id` = 269 limit 1)
+2025-02-04 20:25:09,046 ERROR root Error sending SMS to 254795416974: HTTPSConnectionPool(host='bulksms.talksasa.com', port=443): Max retries exceeded with url: /api/v3/sms/send (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7f6b11190f10>: Failed to establish a new connection: [Errno 111] Connection refused'))
+2025-02-04 20:25:10,375 ERROR root Error sending SMS to 254743613388: HTTPSConnectionPool(host='bulksms.talksasa.com', port=443): Max retries exceeded with url: /api/v3/sms/send (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7f6b109b24c0>: Failed to establish a new connection: [Errno 111] Connection refused'))
+2025-02-07 09:56:23,117 ERROR root APIError: [500]: Internal error encountered.
+2025-02-07 09:56:23,118 ERROR root Failed to process loyalty points for contact 254758220120
+2025-02-12 16:20:14,536 ERROR root Error sending SMS to 254769015335: HTTPSConnectionPool(host='bulksms.talksasa.com', port=443): Max retries exceeded with url: /api/v3/sms/send (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x7f5cd3f94490>: Failed to resolve 'bulksms.talksasa.com' ([Errno -2] Name or service not known)"))
+2025-02-12 18:20:12,980 ERROR root Error sending SMS to 254792524646: HTTPSConnectionPool(host='bulksms.talksasa.com', port=443): Max retries exceeded with url: /api/v3/sms/send (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x7f5cd3f95430>: Failed to resolve 'bulksms.talksasa.com' ([Errno -2] Name or service not known)"))
+2025-02-14 08:25:16,051 ERROR root Failed
+2025-02-14 10:10:11,083 ERROR root Failed
+2025-02-14 10:25:09,972 ERROR root {"Error": "403: ChargingError (Charging user talksasa failed, Balance 0.0 Total Bill (2.0))"}
+2025-02-15 16:01:00,754 ERROR root {"Error": "Error Sending SMS "}
+2025-03-05 23:25:22,539 ERROR root {"Error": "403: ChargingError (Charging user talksasa failed, Balance 0.0 Total Bill (2.0))"}
+2025-03-05 23:25:25,432 ERROR root {"Error": "403: ChargingError (Charging user talksasa failed, Balance 0.0 Total Bill (2.0))"}
+2025-03-05 23:25:27,909 ERROR root {"Error": "403: ChargingError (Charging user talksasa failed, Balance 0.0 Total Bill (2.0))"}
+2025-03-06 07:50:16,319 ERROR root {"Error": "403: ChargingError (Charging user talksasa failed, Balance 0.0 Total Bill (2.0))"}
+2025-03-06 08:10:12,032 ERROR root {"Error": "403: ChargingError (Charging user talksasa failed, Balance 0.0 Total Bill (2.0))"}
+2025-03-06 09:00:20,976 ERROR root {"Error": "403: ChargingError (Charging user talksasa failed, Balance 0.0 Total Bill (2.0))"}
+2025-03-07 13:50:38,194 ERROR root APIError: [500]: Internal error encountered.
+2025-03-07 13:50:38,196 ERROR root Failed to process loyalty points for contact 254706363171
+2025-03-09 13:25:40,927 ERROR root APIError: [500]: Internal error encountered.
+2025-03-09 13:25:40,927 ERROR root Failed to process loyalty points for contact 254741209022
+2025-03-11 13:15:12,734 ERROR root {"Error": "403: ChargingError (Charging user talksasa failed, Balance 0.0 Total Bill (2.0))"}
+2025-03-11 13:20:10,278 ERROR root {"Error": "403: ChargingError (Charging user talksasa failed, Balance 0.0 Total Bill (2.0))"}
+2025-03-11 13:25:09,137 ERROR root {"Error": "403: ChargingError (Charging user talksasa failed, Balance 0.0 Total Bill (2.0))"}
+2025-03-11 13:35:12,939 ERROR root {"Error": "403: ChargingError (Charging user talksasa failed, Balance 0.0 Total Bill (2.0))"}
+2025-03-11 13:35:15,094 ERROR root {"Error": "403: ChargingError (Charging user talksasa failed, Balance 0.0 Total Bill (2.0))"}
+2025-03-11 13:50:09,203 ERROR root {"Error": "403: ChargingError (Charging user talksasa failed, Balance 0.0 Total Bill (2.0))"}
+2025-03-15 09:15:11,069 ERROR root APIError: [503]: The service is currently unavailable.
+2025-03-15 09:15:11,081 ERROR root Failed to process loyalty points for contact 254741573518
+2025-03-18 11:01:12,761 ERROR root {
+  "message":"The upstream server is timing out"
+}
+2025-03-18 11:01:14,500 ERROR root Failed to connect to apis.onfonmedia.co.ke port 443: Connection refused
+2025-03-26 11:01:16,874 ERROR root {
+  "message":"The upstream server is timing out"
+}
+2025-03-27 11:01:11,691 ERROR root {
+  "message":"The upstream server is timing out"
+}
+2025-03-28 20:01:17,103 ERROR root {
+  "message":"The upstream server is timing out"
+}
+2025-03-29 11:01:11,647 ERROR root {
+  "message":"The upstream server is timing out"
+}
+2025-03-29 15:50:09,391 ERROR root APIError: [503]: The service is currently unavailable.
+2025-03-29 15:50:09,403 ERROR root Failed to process loyalty points for contact 254700589055
+2025-04-01 11:01:14,788 ERROR root {
+  "message":"The upstream server is timing out"
+}
+2025-04-03 16:30:13,175 ERROR root APIError: [503]: The service is currently unavailable.
+2025-04-03 16:30:13,186 ERROR root Failed to process loyalty points for contact 254748981065
+2025-04-03 18:05:09,452 ERROR root APIError: [503]: The service is currently unavailable.
+2025-04-03 18:05:09,452 ERROR root Failed to process loyalty points for contact 254726296639
+2025-04-03 22:01:13,376 ERROR root {
+  "message":"The upstream server is timing out"
+}
+2025-04-03 22:01:55,336 ERROR root {"Error": "Error Sending SMS "}
+2025-04-05 11:45:06,832 ERROR root APIError: [503]: The service is currently unavailable.
+2025-04-05 11:45:06,833 ERROR root Failed to process loyalty points for contact 254707159531
+2025-04-05 12:10:35,077 ERROR root APIError: [500]: Internal error encountered.
+2025-04-05 12:10:35,078 ERROR root Failed to process loyalty points for contact 254708763886
+2025-04-05 16:33:12,888 ERROR root APIError: [503]: The service is currently unavailable.
+2025-04-05 16:33:12,889 ERROR root Failed to process loyalty points for contact 254713998755
+2025-04-08 19:36:00,188 ERROR root APIError: [429]: Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:1037135792848'.
+2025-04-08 19:36:00,191 ERROR root Failed to process loyalty points for contact 254703345866
+2025-04-08 19:36:00,251 ERROR root APIError: [429]: Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:1037135792848'.
+2025-04-08 19:36:00,251 ERROR root Failed to process loyalty points for contact 254758218980
+2025-04-08 19:36:00,333 ERROR root APIError: [429]: Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:1037135792848'.
+2025-04-08 19:36:00,334 ERROR root Failed to process loyalty points for contact 254702489701
+2025-04-08 19:36:00,386 ERROR root APIError: [429]: Quota exceeded for quota metric 'Read requests' and limit 'Read requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:1037135792848'.
+2025-04-08 19:36:00,387 ERROR root Failed to process loyalty points for contact 254741813031
+2025-04-08 19:36:11,203 ERROR root APIError: [429]: Quota exceeded for quota metric 'Write requests' and limit 'Write requests per minute per user' of service 'sheets.googleapis.com' for consumer 'project_number:1037135792848'.
+2025-04-09 17:01:12,939 ERROR root {
+  "message":"The upstream server is timing out"
+}
+2025-04-10 12:01:46,265 ERROR root Failed to connect to apis.onfonmedia.co.ke port 443: Connection refused
+2025-04-10 12:02:04,998 ERROR root {"Error": "Error Sending SMS "}
+2025-04-10 14:01:14,989 ERROR root Failed to connect to apis.onfonmedia.co.ke port 443: Connection refused
+2025-04-10 18:01:14,803 ERROR root {
+  "message":"The upstream server is timing out"
+}
+2025-04-10 19:01:55,176 ERROR root APIError: [500]: Internal error encountered.
+2025-04-10 19:01:55,177 ERROR root Failed to process loyalty points for contact 254741054321
+2025-04-10 19:07:46,451 ERROR root APIError: [503]: The service is currently unavailable.
+2025-04-10 19:07:46,451 ERROR root Failed to process loyalty points for contact 254741054321
+2025-04-10 19:10:13,614 ERROR root APIError: [503]: The service is currently unavailable.
+2025-04-10 19:10:13,614 ERROR root Failed to process loyalty points for contact 254741054321
+2025-04-10 19:13:18,931 ERROR root APIError: [503]: The service is currently unavailable.
+2025-04-10 19:13:18,936 ERROR root Failed to process loyalty points for contact 254726537770
+2025-04-10 20:40:18,829 ERROR root Error sending SMS to 254798444887: HTTPSConnectionPool(host='bulksms.talksasa.com', port=443): Max retries exceeded with url: /api/v3/sms/send (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7fb139dcc8b0>: Failed to establish a new connection: [Errno 111] Connection refused'))
+2025-04-10 20:40:20,445 ERROR root Error sending SMS to 254712384656: HTTPSConnectionPool(host='bulksms.talksasa.com', port=443): Max retries exceeded with url: /api/v3/sms/send (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7fb13a914ee0>: Failed to establish a new connection: [Errno 111] Connection refused'))
+2025-04-10 20:50:09,289 ERROR root Error sending SMS to 254716677886: HTTPSConnectionPool(host='bulksms.talksasa.com', port=443): Max retries exceeded with url: /api/v3/sms/send (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7fb139dcce50>: Failed to establish a new connection: [Errno 111] Connection refused'))
+2025-04-10 20:50:10,550 ERROR root Error sending SMS to 254702813034: HTTPSConnectionPool(host='bulksms.talksasa.com', port=443): Max retries exceeded with url: /api/v3/sms/send (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7fb13a4a5340>: Failed to establish a new connection: [Errno 111] Connection refused'))
+2025-04-10 21:00:10,600 ERROR root Error sending SMS to 254704705750: HTTPSConnectionPool(host='bulksms.talksasa.com', port=443): Max retries exceeded with url: /api/v3/sms/send (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7fb13a4a5a00>: Failed to establish a new connection: [Errno 111] Connection refused'))
+2025-04-10 21:05:10,683 ERROR root Error sending SMS to 254707916592: HTTPSConnectionPool(host='bulksms.talksasa.com', port=443): Max retries exceeded with url: /api/v3/sms/send (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7fb139dcc250>: Failed to establish a new connection: [Errno 111] Connection refused'))
+2025-04-12 10:01:14,501 ERROR root {
+  "message":"The upstream server is timing out"
+}
+2025-04-19 13:55:14,355 ERROR root Database connection [redis] not configured.
+2025-04-22 18:20:18,065 ERROR root APIError: [503]: The service is currently unavailable.
+2025-04-22 18:20:18,078 ERROR root Failed to process loyalty points for contact 254757936470
+2025-04-22 18:25:14,191 ERROR root APIError: [503]: The service is currently unavailable.
+2025-04-22 18:25:14,191 ERROR root Failed to process loyalty points for contact 254757936470
+2025-04-22 18:30:26,675 ERROR root APIError: [503]: The service is currently unavailable.
+2025-04-22 18:30:26,675 ERROR root Failed to process loyalty points for contact 254757936470
+2025-04-22 18:30:26,990 ERROR root APIError: [503]: The service is currently unavailable.
+2025-04-22 18:30:26,991 ERROR root Failed to process loyalty points for contact 254790479371
+2025-04-22 21:20:14,703 ERROR root APIError: [503]: The service is currently unavailable.
+2025-04-22 21:20:14,722 ERROR root Failed to process loyalty points for contact 254701759424
+2025-04-22 21:25:16,110 ERROR root APIError: [503]: The service is currently unavailable.
+2025-04-22 21:25:16,111 ERROR root Failed to process loyalty points for contact 254701759424
+2025-04-22 21:30:25,730 ERROR root APIError: [503]: The service is currently unavailable.
+2025-04-22 21:30:25,730 ERROR root Failed to process loyalty points for contact 254701759424
+2025-04-27 13:15:12,089 ERROR root Error sending SMS to 254748713723: Expecting value: line 1 column 1 (char 0)
+2025-04-28 14:05:08,592 ERROR root Error sending SMS to 254724111358: HTTPSConnectionPool(host='bulksms.talksasa.com', port=443): Max retries exceeded with url: /api/v3/sms/send (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x7f7365c69b80>: Failed to resolve 'bulksms.talksasa.com' ([Errno -2] Name or service not known)"))
+2025-05-05 20:03:20,808 ERROR root APIError: [503]: The service is currently unavailable.
+2025-05-22 16:55:18,823 ERROR root Error sending SMS to 254716822195: HTTPSConnectionPool(host='bulksms.talksasa.com', port=443): Max retries exceeded with url: /api/v3/sms/send (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x7f88d0341c40>: Failed to resolve 'bulksms.talksasa.com' ([Errno -2] Name or service not known)"))
+2025-05-22 18:00:11,621 ERROR root Error sending SMS to 254759549321: HTTPSConnectionPool(host='bulksms.talksasa.com', port=443): Max retries exceeded with url: /api/v3/sms/send (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x7f88d03411f0>: Failed to resolve 'bulksms.talksasa.com' ([Errno -2] Name or service not known)"))
+2025-05-22 19:20:14,171 ERROR root {"Error": "403: ChargingError (Charging user talksasa failed, Balance 0.0 Total Bill (2.0))"}
+2025-05-22 19:25:11,023 ERROR root {"Error": "403: ChargingError (Charging user talksasa failed, Balance 0.0 Total Bill (2.0))"}
+2025-05-22 22:35:18,241 ERROR root Error sending SMS to 254748799715: HTTPSConnectionPool(host='bulksms.talksasa.com', port=443): Max retries exceeded with url: /api/v3/sms/send (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x7f88d0b82f40>: Failed to resolve 'bulksms.talksasa.com' ([Errno -2] Name or service not known)"))
+2025-05-24 14:15:34,969 ERROR root APIError: [500]: Internal error encountered.
+2025-05-24 14:15:34,981 ERROR root Failed to process loyalty points for contact 254713451965
+2025-05-24 14:16:10,674 ERROR root APIError: [500]: Internal error encountered.
+2025-05-24 14:16:10,674 ERROR root Failed to process loyalty points for contact 254715180384
+2025-05-24 14:23:09,195 ERROR root APIError: [503]: The service is currently unavailable.
+2025-05-24 14:23:09,196 ERROR root Failed to process loyalty points for contact 254713451965
+2025-05-25 22:15:12,833 ERROR root {"Error": "403: ChargingError (Charging user talksasa failed, Balance 0.0 Total Bill (2.0))"}
+2025-05-28 07:16:52,759 ERROR root Error sending SMS to 254716745374: Expecting value: line 1 column 1 (char 0)
+2025-05-30 10:00:14,121 ERROR root APIError: [503]: The service is currently unavailable.
+2025-05-30 10:00:14,130 ERROR root Failed to process loyalty points for contact 254715385666
+2025-06-13 10:40:13,891 ERROR root APIError: [503]: The service is currently unavailable.
+2025-06-13 10:40:13,896 ERROR root Failed to process loyalty points for contact 254708108436
+2025-06-20 17:15:11,393 ERROR root APIError: [503]: The service is currently unavailable.
+2025-06-20 17:15:11,396 ERROR root Failed to process loyalty points for contact 254759648884
+2025-07-05 11:25:34,702 INFO werkzeug [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-07-05 11:25:34,705 INFO werkzeug [33mPress CTRL+C to quit[0m
