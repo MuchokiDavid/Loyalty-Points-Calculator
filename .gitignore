@@ -4,3 +4,4 @@ creds.json
 env
 venv
 __pycache__
+*.log
